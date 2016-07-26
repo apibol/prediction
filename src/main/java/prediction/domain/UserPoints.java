@@ -20,7 +20,6 @@ public class UserPoints {
 
     private String predictorId;
 
-
     UserPoints(){}
 
     public UserPoints(String gameId, String userId, Integer pointsEarned,String nickname,String predictorId) {

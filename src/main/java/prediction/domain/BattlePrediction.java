@@ -1,8 +1,10 @@
 package prediction.domain;
 
 import domain.Participant;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Tolerate;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -18,6 +20,7 @@ public class BattlePrediction extends Prediction {
 
     private String playerTwoResult;
 
+    @Tolerate
     BattlePrediction() {
     }
 

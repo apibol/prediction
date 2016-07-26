@@ -24,23 +24,23 @@ public class PredictorEvaluatorTests {
     @Test
     public void testFullWinnerPrediction(){
         BattlePrediction prediction = BattlePrediction.newBattlePrediction("525","54xn","2","0",this.participantOne);
-        assertEquals(Integer.valueOf(6),new PredictionEvaluator(this.winnerResult).evaluate(prediction));
+        assertEquals(Integer.valueOf(30),new PredictionEvaluator(this.winnerResult).evaluate(prediction));
     }
 
     @Test
     public void testFullTiePrediction(){
         BattlePrediction prediction = BattlePrediction.newBattlePrediction("525","54xn","0","0",this.participantOne);
-        assertEquals(Integer.valueOf(6),new PredictionEvaluator(this.tieResult).evaluate(prediction));
+        assertEquals(Integer.valueOf(30),new PredictionEvaluator(this.tieResult).evaluate(prediction));
     }
 
     @Test
     public void testCorrectWinnerPrediction(){
         BattlePrediction prediction = BattlePrediction.newBattlePrediction("525","54xn","2","1",this.participantOne);
-        assertEquals(Integer.valueOf(3),new PredictionEvaluator(this.winnerResult).evaluate(prediction));
+        assertEquals(Integer.valueOf(15),new PredictionEvaluator(this.winnerResult).evaluate(prediction));
     }
 
     @Test
-    public void testWrongtWinnerPrediction(){
+    public void testWrongWinnerPrediction(){
         BattlePrediction prediction = BattlePrediction.newBattlePrediction("525","54xn","1","2",this.participantOne);
         assertEquals(Integer.valueOf(0),new PredictionEvaluator(this.winnerResult).evaluate(prediction));
     }

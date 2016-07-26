@@ -1,5 +1,11 @@
 package prediction.domain;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import prediction.domain.factory.PredictionResultFactory;
 import prediction.domain.specification.FullMatchPrediction;
 import prediction.domain.specification.GoalsInMatchPrediction;
 import prediction.domain.specification.WinnerMatchPrediction;
@@ -17,6 +23,8 @@ public class PredictionEvaluator {
 
     private final GoalsInMatchPrediction goalsInMatchPrediction;
 
+    private List<PredictionResult> results = new ArrayList<>();
+
     public PredictionEvaluator(BattleResult battleResult) {
         this.fullMatchPrediction = new FullMatchPrediction(battleResult);
         this.winnerMatchPrediction = new WinnerMatchPrediction(battleResult);
@@ -26,15 +34,17 @@ public class PredictionEvaluator {
     /**
      * Evaluate the battle prediction
      *
-     * @param battlePrediction
-     * @return
+     * @param battlePrediction - the battle prediction
+     *
+     * @return - points earned
      */
     public Integer evaluate(BattlePrediction battlePrediction) {
-        int byFull = this.fullMatchPrediction.isSatisfiedBy(battlePrediction) ? 6 : 0;
-        int byWinner = this.winnerMatchPrediction.isSatisfiedBy(battlePrediction) ? 3 : 0;
-        int byGoals = this.goalsInMatchPrediction.isSatisfiedBy(battlePrediction) ? 1 : 0;
-        final int result = byFull > byWinner ? byFull : byWinner;
-        return result > byGoals ? result : byGoals;
+        this.results.add(PredictionResultFactory.wrongMatchPredictionResult());
+        this.results.add(PredictionResultFactory.newFullMatchPredictionResult(this.fullMatchPrediction.isSatisfiedBy(battlePrediction)));
+        this.results.add(PredictionResultFactory.newWinnerMatchPredictionResult(this.winnerMatchPrediction.isSatisfiedBy(battlePrediction)));
+        this.results.add(PredictionResultFactory.newGoalMatchPredictionResult(this.goalsInMatchPrediction.isSatisfiedBy(battlePrediction)));
+        final List<PredictionResult> values = this.results.stream().sorted((el1, el2) -> el2.getWeight().compareTo(el1.getPoints())).collect(Collectors.toList());
+        return values.stream().filter(PredictionResult::getCorrect).findFirst().get().getPoints();
     }
 
 }
